@@ -181,4 +181,27 @@ public class ImprovedFile extends File {
 
         return backup;
     }
+
+    public void backup (ImprovedFile backup) throws LtsllcException {
+        if (backup.exists()) {
+            backup.delete();
+        }
+
+        copyTo(backup);
+    }
+
+    public void clear () {
+        ImprovedFile backup = new ImprovedFile(getName() + ".backup");
+        if (backup.exists()) {
+            backup.delete();
+        }
+
+        renameTo(backup);
+
+        try {
+            touch();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
